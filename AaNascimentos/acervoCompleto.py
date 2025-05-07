@@ -36,7 +36,6 @@ h, w = template.shape[:2]
 for i in lista:
     pa.press('f3')
     pa.write(str(i))
-    pa.press('enter')
     
     screenshot = pa.screenshot()
     screenshot = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
@@ -49,7 +48,6 @@ for i in lista:
     
     if max_val >= limiar:
         zz.append(str(i))
-        pa.hotkey('ctrl', '1')
         continue
     else:
         print('achou diferente')
@@ -57,12 +55,11 @@ for i in lista:
     pa.hotkey('ctrl', 'enter')
     pa.hotkey('ctrl', '2')
         
-    time.sleep(1) #pausa------------------
+    time.sleep(1.25) #pausa------------------
 
     # clica no acervo
     pa.click(x=145, y=460)
     pa.hotkey('ctrl', 'a')
-    pa.press('backspace')
     pa.press('1')
     pa.press('tab', presses=2)
 
@@ -78,16 +75,18 @@ for i in lista:
 
     # grava e converte
     pa.click(x=100, y=490)
-    time.sleep(0.25)
+    time.sleep(0.10)
     pa.click(x=200, y=490)
-    time.sleep(1.75)
+    time.sleep(2.1)
     
     # verifica mensagem
     pa.hotkey('ctrl', 'a')
     pa.hotkey('ctrl', 'c')
     mensagem = pc.paste()
-    if mensagem == 'Índice já convertido para registro':
+    if mensagem == ('Índice já convertido para registro' or ''):
         jc.append(str(i))
+    
+    pa.click(x=190, y=120)
 
     # volta para pesquisa
     pa.hotkey('ctrl', '1')
