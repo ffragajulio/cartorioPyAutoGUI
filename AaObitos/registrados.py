@@ -4,8 +4,10 @@ import cv2
 import numpy as np
 import time
 
-template = cv2.imread(r'C:\Users\usuario\Desktop\codigos\automatizacao\assets\obito.png', cv2.IMREAD_COLOR)
-h, w = template.shape[:2]
+template1 = cv2.imread(r'C:\Users\usuario\Desktop\codigos\automatizacao\assets\obito1.png', cv2.IMREAD_COLOR)
+template2 = cv2.imread(r'C:\Users\usuario\Desktop\codigos\automatizacao\assets\obito2.png', cv2.IMREAD_COLOR)
+h1, w1 = template1.shape[:2]
+h2, w2 = template2.shape[:2]
 
 a = int(input('primeiro valor:'))
 b = int(input('segundo valor:'))
@@ -27,16 +29,19 @@ for i in range(a, b + 1):
     # clica pesquisar
     pa.click(x=55, y=200)
     
+    time.sleep(2)
+    
     # verifica se existe obito registrado
     screenshot = pa.screenshot()
     screenshot = cv2.cvtColor(np.array(screenshot), cv2.COLOR_RGB2BGR)
     
-    result = cv2.matchTemplate(screenshot, template, cv2.TM_CCOEFF_NORMED)
-    _, max_val, _, max_loc = cv2.minMaxLoc(result)
-    
+    result1 = cv2.matchTemplate(screenshot, template1, cv2.TM_CCOEFF_NORMED)
+    result2 = cv2.matchTemplate(screenshot, template2, cv2.TM_CCOEFF_NORMED)
+    _, max_val1, _, max_loc1 = cv2.minMaxLoc(result1)
+    _, max_val2, _, max_loc2 = cv2.minMaxLoc(result2)
     limiar = 0.9  # ajustar esse valor se estiver muito sensível
     
-    if max_val >= limiar:
+    if max_val1 >= limiar or max_val2 >= limiar:
         # existe obito
         time.sleep(6)
         
@@ -55,7 +60,7 @@ for i in range(a, b + 1):
         
         # muda p termo e escreve
         pa.press('tab')
-        pa.write(str(i))
+        pa.write(str(i + 1000))
         
         # muda p acervo e escreve
         pa.press('tab')
@@ -66,7 +71,7 @@ for i in range(a, b + 1):
         
         time.sleep(2)
     else:
-        # nao eiste obito
+        # nao existe obito
         time.sleep(6)
         
         # clica no acervo
